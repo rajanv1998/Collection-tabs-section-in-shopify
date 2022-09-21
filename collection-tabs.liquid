@@ -1,0 +1,159 @@
+<section class="collection_tabs">
+  <div class="page-width">
+    <div class="section-heading text-center">
+      {% if section.settings.heading != blank %}
+      <h2>{{ section.settings.heading }}</h2>
+      {% endif %}
+      {% if section.settings.subheading != blank %}
+      <p>{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+    <div class="tabs">
+      <ul id="tabs-nav">
+        {% for block in section.blocks %}
+         {% if block.settings.collection_name != blank %}
+        <li><a href="#tab{{ forloop.index }}">{{block.settings.collection_name}}</a></li>
+        {% endif %}
+        {% endfor%}
+  	  </ul>
+      <div id="tabs-content">
+        {% for block in section.blocks %} 
+        <div id="tab{{ forloop.index }}" class="tab-content">
+          {%- assign collection = collections[block.settings.collection] -%}
+          <div class="collection_sec">
+          <div class="grid-collection">
+          {% for product in collection.products limit: 4 %} 
+           <div class="grid-product">
+              <a class="product_img_link" href="{{ product.url }}">
+                <div class="reveal">
+                  {% if product.compare_at_price > product.price and settings.promotion_tag %}
+                  <div class="product_discount" aria-hidden="true" accesskey>
+                    {% if settings.promo_text_or_pourc == '1' %}
+                      {{settings.promo_text}}
+                    {% else %}
+                      {% if product.compare_at_price_max != product.compare_at_price_min %}
+                        {% assign compare_old_count = 0 %}
+                        {% assign compare_new_count = 0 %}
+                        {% for variant in product.variants %}
+                          {% if variant.compare_at_price > variant.price %}
+                              {% capture compare_new_count %}{{ variant.compare_at_price | minus: variant.price | times: 100.0 | divided_by: variant.compare_at_price| ceil }}{% endcapture %}
+                            <script>if({{compare_new_count}} > {{compare_old_count}}){ {% assign compare_old_count = compare_new_count %} }</script>
+                          {% endif %}
+                        {% endfor %}
+                        <span>{{ 'products.product.upto' | t }} -{{ compare_old_count | append: "%"}}</span>
+                      {% else %}
+                        <span>-{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | ceil }}%</span>
+                      {% endif %}
+                    {% endif %}
+                  </div>
+                {% endif %}
+                  {% if product.images.size > 1 %}
+                 	<img data-swift-lazy=1 loading=lazy class="product_img_new" lazy-src="{{ product.featured_image.src | img_url: '348x' }}">
+                 	<img data-swift-lazy=1 loading=lazy class="product_img_new hidden" lazy-src="{{ product.images[1] | product_img_url: '348x' }}">
+                  {% else %}
+                   <img data-swift-lazy=1 loading=lazy src="{{ product.featured_image.src | img_url: 'original' }}" alt="{{ product.featured_image.alt | escape }}">
+  				  {% endif %}
+                  {%comment%}
+                 <div class="product_img" style="background-image: url('{{ product.featured_image.src | img_url: 'original' }}');"></div>
+                 <div class="product_img hidden" style="background-image: url('{{ product.images[1] | product_img_url: 'original' }}');"></div>
+                  {%endcomment%}
+                </div>
+              </a>
+              <a class="product_title" href="{{ product.url }}">{{ product.title }}</a>
+              {% if product.available %}
+              <div class="product-card__price">
+                {% if product.compare_at_price > product.price %}
+                  {% if product.price_varies %}
+                    {% assign sale_price = product.price | money %}
+                    <span class="product-card__promo-price">{{ 'products.product.on_sale_from_html' | t: price: sale_price }}</span>
+                  {% else %}
+                    <span class="product-card__promo-price">{{ product.price | money }}</span>
+                    <s class="product-card__regular-price">{{ product.compare_at_price | money }}</s>
+                  {% endif %}
+                {% else %}
+                  {% if product.price_varies %}
+                    {% assign price = product.price | money %}
+                    {{ 'products.product.from_text_html' | t: price: price }}
+                  {% else %}
+                    {{ product.price | money }}
+                  {% endif %}
+                {% endif %}
+                {%- unless product.price_varies -%}
+                  {%- if current_variant.unit_price_measurement -%}
+                    {% include 'product-unit-price', product_variant: current_variant, wrapper_class: "product-card__unit-price" %}
+                  {%- endif -%}
+                {%- endunless -%}
+              </div>
+            {% else %}
+              <div class="product-card__availability">
+                {{ 'products.product.sold_out' | t }}
+              </div>
+            {% endif %}
+                
+             {% if settings.app_reviews != '0' %} <div class="product_rating text-left">{% include 'star-rating' %}</div> {% endif %}
+            </div>
+          {%endfor%}
+           
+            <div class="btn_container text-center">
+              <a href="{{block.settings.collection_url}}">{{section.settings.button_label}}</a>
+            </div>
+            
+          </div>
+          </div>
+        </div>
+        {% endfor%}
+      </div>
+	</div> 
+  </div>
+</section>
+{% schema %}
+  {
+    "name": "Featured Collection Tabs",
+    "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading"
+        },
+		{
+          "type": "textarea",
+          "id": "subheading",
+          "label": "Sub Heading"
+        },
+		{
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label"
+        }
+	],
+      "blocks":[
+       {
+        "type": "Collection",
+        "name": "Collection",
+        "settings": [
+              {
+                "type": "text",
+                "id": "collection_name",
+                "label": "Collection Name"
+              },
+              {
+                "id": "collection",
+                "type": "collection",
+                "label": "Select Collection"
+              },
+			  {
+                "type": "url",
+                "id": "collection_url",
+                "label": "Button Url"
+              }
+            ]
+          }
+      ],
+      "presets": [
+       {
+         "name": "Featured Collection Tabs",
+         "category": "Featured Collection Tabs"
+       }
+      ]
+  }
+{% endschema %}
