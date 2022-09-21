@@ -1,0 +1,198 @@
+/**** collections tabs ****/
+.collection_tabs {
+    padding: 2em 0;
+}
+.collection_tabs .page-width {
+    max-width: 1500px;
+}
+.collection_tabs .section-heading {
+    margin-bottom: 35px;
+}
+.collection_sec .grid-collection {
+    display: flex;
+    flex-wrap: wrap;
+}
+.collection_sec .grid-product {
+    width: 25%;
+    padding: 0 10px;
+}
+.collection_sec .product_img {
+    height: 337px !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+}
+.reveal {
+    position: relative;
+    overflow: hidden;
+}
+.reveal img {
+    display: block;
+}
+.reveal .hidden {
+    position: absolute;
+    z-index: 0!important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    opacity: 0;
+    -webkit-transition: opacity .6s ease-in-out;
+    -moz-transition: opacity .6s ease-in-out;
+    -o-transition: opacity .6s ease-in-out;
+    transition: opacity .6s ease-in-out;
+}
+.reveal:hover .hidden {
+    opacity: 1;
+}
+.reveal .product_discount{ 
+  transition: 0.6s all;
+}
+.reveal:hover .product_discount {
+    transform: translateX(-65px);
+}
+.collection_sec .grid-product .product_title {
+    color: #1b1b1b;
+    font-size: 16px;
+    margin: 10px 0 5px 0;
+    line-height: 26px;
+    font-weight: 500;
+    display: block;
+    text-align:center;
+}
+.collection_sec .grid-product .product_price {
+    color: #929292;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+.collection_sec .product_discount {
+    position: absolute;
+    min-width: 50px;
+    height: 30px;
+    padding: 0 6px;
+    background: #e4572e;
+    color: #fff;
+    font-size: 13px;
+    text-align: center;
+    letter-spacing: .05em;
+    line-height: 30px;
+    z-index: 2;
+}
+
+.collection_sec .product-card__price {
+    color: #929292;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.collection_sec .product-card__promo-price {
+    font-weight: 400;
+}
+.collection_sec .btn_container {
+    margin: 30px auto 0 auto;
+}
+
+.collection_sec .btn_container a {
+    background: #e3572e;
+    color: #ffffff;
+    font-size: 16px;
+    line-height: 1;
+    text-transform: uppercase;
+    padding: 14px 30px;
+    display: block;
+}
+.collection_sec .btn_container a:hover {
+    background: #1b1b1b;
+}
+/* Tabs */
+
+#tabs-nav {
+   text-align: center;
+   margin-bottom: 50px;
+}
+#tabs-nav li {
+  display: inline-block;
+    position: relative;
+    margin-bottom: 10px;
+}
+#tabs-nav li a {
+    background: #f1f1f1;
+    color: #1b1b1b;
+    margin: 0 5px;
+    font-size: 16px;
+    line-height: 1;
+    text-transform: uppercase;
+    padding: 14px 30px;
+    cursor: pointer;
+    position: relative;
+    border-radius: 3px;
+    display: block;
+    transition: 0.4s all;
+}
+#tabs-nav li a:hover{
+  background-color: #e3572e;
+    color: #fff;
+}
+#tabs-nav li.active a{
+  background-color: #e3572e;
+  color: #fff;
+}
+#tabs-nav li::before{
+    content: "";
+    width: 0;
+    height: 0;
+  border-color: transparent transparent transparent transparent;
+    border-width: 5px 5px 0 5px;
+    border-style: solid;
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    margin-left: -5px;
+    transition: 0.4s all;
+    
+}
+#tabs-nav li.active::before {
+    border-color: #e3572e transparent transparent transparent;
+}
+#tabs-nav li:hover::before {
+    border-color: #e3572e transparent transparent transparent;
+}
+@media only screen and (max-width: 1500px){
+.hero_sec .container,.collection_tabs .page-width {
+    padding: 0 80px;
+} 
+}
+@media only screen and (max-width: 767px){ 
+.collection_tabs .page-width {
+    padding: 0 15px;
+} 
+/** collection tabs ***/
+.collection_sec .grid-collection {
+  flex-wrap: unset;
+  scroll-snap-type: x mandatory;
+  overflow: auto;
+  display: grid;
+  grid-template-columns: repeat(4, 80%);  
+}
+.collection_sec .grid-collection::-webkit-scrollbar,.blogs_main .blog_sec::-webkit-scrollbar {
+    display: none;
+}
+.collection_sec .grid-product {
+    min-width: 100%;
+    scroll-snap-align: start;
+}
+.collection_sec .btn_container {
+    position: sticky;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.collection_sec .grid-product .product_title {
+    font-size: 14px;
+    line-height: 19px;
+   
+}  
+#tabs-nav li a {
+    font-size: 14px;
+}
+} 
